@@ -70,3 +70,48 @@ machines_instances:
         - "machineName      = 'Node2'"
         - "machineDnsName   = '10.10.10.200'"
 
+datasource_instances:
+  'jdbcScott':
+     log_output:           *logoutput
+     weblogic_type:        "jdbc"
+     weblogic_object_name: "scottDS"
+     script:               'createJdbcDatasource.py'
+     params:      
+        - "dsName                      = 'scottDS'"
+        - "dsJNDIName                  = 'jdbc/scottDS'"
+        - "dsDriverName                = 'com.mysql.jdbc.Driver'"
+        - "dsURL                       = 'jdbc:mysql://10.10.10.10:3306/scott'"
+        - "dsUserName                  = 'scott'"
+        - "dsPassword                  = 'tiger'"
+        - "jdbcDatasourceTargets       = 'AdminServer'"
+        - "datasourceTargetType        = 'Server'"
+  'jdbcJms':
+     log_output:           *logoutput
+     weblogic_type:        "jdbc"
+     weblogic_object_name: "jmsDS"
+     script:               'createJdbcDatasource.py'
+     params:      
+        - "dsName                      = 'jmsDS'"
+        - "dsJNDIName                  = 'jdbc/jmsDS'"
+        - "dsDriverName                = 'com.mysql.jdbc.Driver'"
+        - "dsURL                       = 'jdbc:mysql://10.10.10.10:3306/jms'"
+        - "dsUserName                  = 'jms'"
+        - "dsPassword                  = 'jms'"
+        - "jdbcDatasourceTargets       = 'AdminServer'"
+        - "datasourceTargetType        = 'Server'"
+  'jdbcWls':
+     log_output:           *logoutput
+     weblogic_type:        "jdbc"
+     weblogic_object_name: "wlsDS"
+     script:               'createJdbcDatasource.py'
+     params:      
+        - "dsName                      = 'wlsDS'"
+        - "dsJNDIName                  = 'jdbc/wlsDS'"
+        - "dsDriverName                = 'com.mysql.jdbc.Driver'"
+        - "dsURL                       = 'jdbc:mysql://10.10.10.10:3306/wls'"
+        - "dsUserName                  = 'wls'"
+        - "dsPassword                  = 'wls'"
+        - "jdbcDatasourceTargets       = 'AdminServer'"
+        - "datasourceTargetType        = 'Server'"
+
+

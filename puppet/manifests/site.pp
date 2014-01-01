@@ -6,11 +6,11 @@
 
 node 'adminwls.example.com' {
   
-  include os, ssh, java
+  include os, ssh, java, mysql
   include orawls::weblogic, orautils
   include opatch
   include domains, nodemanager, startwls, userconfig
-  include machines
+  include machines, datasources
   include pack_domain
 
   Class[java] -> Class[orawls::weblogic]
@@ -172,6 +172,183 @@ class java {
 
 }
 
+class mysql {
+  require os
+
+  class { '::mysql::server':
+    root_password    => 'welcome',
+    override_options => { 
+          'mysqld' => { 
+            'max_connections'   => '1024' ,
+            'bind_address'      => '10.10.10.10',
+          } 
+      },
+    users  => { 
+          'scott@%' => {
+            ensure                   => 'present',
+            password_hash            => '*F2F68D0BB27A773C1D944270E5FAFED515A3FA40',
+          },
+          'jms@%' => {
+            ensure                   => 'present',
+            password_hash            => '*28CA77A6A0BB78326F4FB9832227B7B30EC1F167',
+          },
+          'wls@%' => {
+            ensure                   => 'present',
+            password_hash            => '*8004AA0A8F787363411605114E740FD69D34642F',
+          },         
+          'scott@adminwls' => {
+            ensure                   => 'present',
+            password_hash            => '*F2F68D0BB27A773C1D944270E5FAFED515A3FA40',
+          },
+          'jms@adminwls' => {
+            ensure                   => 'present',
+            password_hash            => '*28CA77A6A0BB78326F4FB9832227B7B30EC1F167',
+          },
+          'wls@adminwls' => {
+            ensure                   => 'present',
+            password_hash            => '*8004AA0A8F787363411605114E740FD69D34642F',
+          },         
+          'scott@nodewls1' => {
+            ensure                   => 'present',
+            password_hash            => '*F2F68D0BB27A773C1D944270E5FAFED515A3FA40',
+          },
+          'jms@nodewls1' => {
+            ensure                   => 'present',
+            password_hash            => '*28CA77A6A0BB78326F4FB9832227B7B30EC1F167',
+          },
+          'wls@nodewls1' => {
+            ensure                   => 'present',
+            password_hash            => '*8004AA0A8F787363411605114E740FD69D34642F',
+          },         
+          'scott@nodewls2' => {
+            ensure                   => 'present',
+            password_hash            => '*F2F68D0BB27A773C1D944270E5FAFED515A3FA40',
+          },
+          'jms@nodewls2' => {
+            ensure                   => 'present',
+            password_hash            => '*28CA77A6A0BB78326F4FB9832227B7B30EC1F167',
+          },
+          'wls@nodewls2' => {
+            ensure                   => 'present',
+            password_hash            => '*8004AA0A8F787363411605114E740FD69D34642F',
+          },         
+
+      },
+    grants => {
+          'scott@%' => {
+            ensure     => 'present',
+            options    => ['GRANT'],
+            privileges => ['DROP','ALTER','SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+            table      => 'scott.*',
+            user       => 'scott@%',
+          },
+          'jms@%' => {
+            ensure     => 'present',
+            options    => ['GRANT'],
+            privileges => ['CREATE','DROP','ALTER','SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+            table      => 'jms.*',
+            user       => 'jms@%',
+          },
+          'wls@%' => {
+            ensure     => 'present',
+            options    => ['GRANT'],
+            privileges => ['CREATE','DROP','ALTER','SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+            table      => 'wls.*',
+            user       => 'wls@%',
+          },          
+          'scott@adminwls' => {
+            ensure     => 'present',
+            options    => ['GRANT'],
+            privileges => ['DROP','ALTER','SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+            table      => 'scott.*',
+            user       => 'scott@adminwls',
+          },
+          'jms@adminwls' => {
+            ensure     => 'present',
+            options    => ['GRANT'],
+            privileges => ['CREATE','DROP','ALTER','SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+            table      => 'jms.*',
+            user       => 'jms@adminwls',
+          },
+          'wls@adminwls' => {
+            ensure     => 'present',
+            options    => ['GRANT'],
+            privileges => ['CREATE','DROP','ALTER','SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+            table      => 'wls.*',
+            user       => 'wls@adminwls',
+          },          
+          'scott@nodewls1' => {
+            ensure     => 'present',
+            options    => ['GRANT'],
+            privileges => ['DROP','ALTER','SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+            table      => 'scott.*',
+            user       => 'scott@nodewls1',
+          },
+          'jms@nodewls1' => {
+            ensure     => 'present',
+            options    => ['GRANT'],
+            privileges => ['CREATE','DROP','ALTER','SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+            table      => 'jms.*',
+            user       => 'jms@nodewls1',
+          },
+          'wls@nodewls1' => {
+            ensure     => 'present',
+            options    => ['GRANT'],
+            privileges => ['CREATE','DROP','ALTER','SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+            table      => 'wls.*',
+            user       => 'wls@nodewls1',
+          },  
+          'scott@nodewls2' => {
+            ensure     => 'present',
+            options    => ['GRANT'],
+            privileges => ['DROP','ALTER','SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+            table      => 'scott.*',
+            user       => 'scott@nodewls2',
+          },
+          'jms@nodewls2' => {
+            ensure     => 'present',
+            options    => ['GRANT'],
+            privileges => ['CREATE','DROP','ALTER','SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+            table      => 'jms.*',
+            user       => 'jms@nodewls2',
+          },
+          'wls@nodewls2' => {
+            ensure     => 'present',
+            options    => ['GRANT'],
+            privileges => ['CREATE','DROP','ALTER','SELECT', 'INSERT', 'UPDATE', 'DELETE'],
+            table      => 'wls.*',
+            user       => 'wls@nodewls2',
+          },  
+      },  
+    databases => {
+          'scott' => {
+            ensure  => 'present',
+            charset => 'utf8',
+          },
+          'jms' => {
+            ensure  => 'present',
+            charset => 'utf8',
+          },
+          'wls' => {
+            ensure  => 'present',
+            charset => 'utf8',
+          },
+      },  
+    service_enabled => true,   
+
+  }
+
+
+  exec {"add scott data":
+    command   => "/usr/bin/sudo /usr/bin/mysql scott -u root < /vagrant/scott_tiger_data.sql",
+    require   => Class['mysql::server'],
+    user      => vagrant,
+    group     => vagrant,
+    logoutput => true,
+  }
+
+
+}
 
 class opatch{
   require orawls::weblogic
@@ -228,9 +405,16 @@ class machines{
   create_resources('orawls::wlstexec',$machines_instances, $default_params)
 }
 
+class datasources{
+  require machines
+
+  $default_params = {}
+  $datasource_instances = hiera('datasource_instances', [])
+  create_resources('orawls::wlstexec',$datasource_instances, $default_params)
+}
 
 class pack_domain{
-  require machines
+  require datasources
 
   notify { 'class pack_domain':} 
   $default_params = {}
