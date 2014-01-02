@@ -7,7 +7,9 @@
 
 node 'nodewls1.example.com', 'nodewls2.example.com' {
   
-  include os, ssh, java, orawls::weblogic, opatch, orautils, copydomain, nodemanager
+  include os, ssh, java, orawls::weblogic 
+  #include opatch, 
+  include orautils, copydomain, nodemanager
 
   Class['java'] -> Class['orawls::weblogic'] 
 }
@@ -167,17 +169,18 @@ class java {
 
 }
 
-class opatch {
-  require orawls::weblogic
+# class opatch {
+#   require orawls::weblogic
 
-  notify { 'class opatch':} 
-  $default_params = {}
-  $opatch_instances = hiera('opatch_instances', [])
-  create_resources('orawls::opatch',$opatch_instances, $default_params)
-}
+#   notify { 'class opatch':} 
+#   $default_params = {}
+#   $opatch_instances = hiera('opatch_instances', [])
+#   create_resources('orawls::opatch',$opatch_instances, $default_params)
+# }
 
 class copydomain {
-  require orawls::weblogic, opatch
+  require orawls::weblogic
+  #, opatch
 
 
   notify { 'class copydomain':} 
@@ -189,7 +192,7 @@ class copydomain {
 
 
 class nodemanager {
-  require orawls::weblogic, opatch, copydomain
+  require orawls::weblogic, copydomain
 
   notify { 'class nodemanager':} 
   $default_params = {}

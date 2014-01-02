@@ -8,7 +8,7 @@ node 'adminwls.example.com' {
   
   include os, ssh, java, mysql
   include orawls::weblogic, orautils
-  include opatch
+  #include opatch
   include domains, nodemanager, startwls, userconfig
   include machines, datasources
   include pack_domain
@@ -350,17 +350,18 @@ class mysql {
 
 }
 
-class opatch{
-  require orawls::weblogic
+# class opatch{
+#   require orawls::weblogic
 
-  notice 'class opatch'
-  $default_params = {}
-  $opatch_instances = hiera('opatch_instances', [])
-  create_resources('orawls::opatch',$opatch_instances, $default_params)
-}
+#   notice 'class opatch'
+#   $default_params = {}
+#   $opatch_instances = hiera('opatch_instances', [])
+#   create_resources('orawls::opatch',$opatch_instances, $default_params)
+# }
 
 class domains{
-  require orawls::weblogic, opatch
+  require orawls::weblogic
+  #, opatch
 
   notice 'class domains'
   $default_params = {}
