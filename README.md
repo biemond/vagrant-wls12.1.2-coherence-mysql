@@ -6,7 +6,6 @@ creates a patched 12.1.2 WebLogic cluster ( adminwls,nodewls1 , nodewls2 ) with 
 weblogic 12.1.2
 - jdk-7u45-linux-x64.tar.gz
 - wls_121200.jar
-- p16175470_121200_Generic.zip
 
 # admin server  
 vagrant up adminwls
